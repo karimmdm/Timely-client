@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect , useMemo} from 'react';
+import Dashboard from './pages/Dashboard';
+import Landing from './pages/Landing';
+import { AuthContext } from './utils/AuthContext'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'; 
+import 'rsuite/dist/styles/rsuite-default.css';
+
+export default function App(){
+  const [user, setUser] = useState(null);
+  const providerValue = useMemo(() => ({ user, setUser }), [user, setUser]);
+  
+  useEffect(() => {
+    // document.body.style.backgroundColor = "#f5f5f5";
+  }, []);
+  
+
+  return(
+    <Router>
+      <div className="App">
+        <AuthContext.Provider value = {providerValue}>
+          <Switch>
+            <Route path = "/dashboard" exact component={Dashboard}/>
+            <Route path = "/" exact component={Landing}/>
+          </Switch>
+        </AuthContext.Provider>
+      </div>
+    </Router>
   );
 }
-
-export default App;
